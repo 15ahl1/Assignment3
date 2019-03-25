@@ -18,32 +18,32 @@ def printBoard(board):
         print("\n")
 
 def calculateLiveNeighbours(board, x, y):
+    count = 0
     xLen = len(board[0])
     yLen = len(board)
-    count = 0
     #Up
-    if board[x][y - 1] == 1:
+    if y - 1 >= 0 and board[x][y - 1] == 1:
         count += 1
     #Down
-    if board[x][y + 1] == 1:
+    if y + 1 < yLen and board[x][y + 1] == 1:
         count += 1
     #Left
-    if board[x - 1][y] == 1:
+    if x - 1 >= 0 and board[x - 1][y] == 1:
         count += 1
     #Right
-    if board[x + 1][y] == 1:
+    if x + 1 < xLen and board[x + 1][y] == 1:
         count += 1
     #TopLeft
-    if board[x - 1][y - 1] == 1:
+    if x - 1 >= 0 and y - 1 >= 0 and board[x - 1][y - 1] == 1:
         count += 1
     #TopRight
-    if board[x + 1][y - 1] == 1:
+    if x + 1 < xLen and y - 1 >= 0 and board[x + 1][y - 1] == 1:
         count += 1
     #BottomLeft
-    if board[x - 1][y + 1] == 1:
+    if x - 1 >= 0 and y + 1 < yLen and board[x - 1][y + 1] == 1:
         count += 1
     #BottomRight
-    if board[x + 1][y + 1] == 1:
+    if x + 1 < xLen and y + 1 < yLen and board[x + 1][y + 1] == 1:
         count += 1
 
     print("Calculated Neighbours: " + str(count))
@@ -59,8 +59,34 @@ def addToFile(path, board, gen):
             file.write(temp + "\n")
     file.close()
 
+def onOffTable(board):
+    xLen = len(board[0])
+    yLen = len(board)
+    output = []
+    for row in range(yLen):
+        temp = []
+        for elem in range(xLen):
+            temp.append(calculateLiveNeighbours(board, elem, row))
+        output.append(temp)
+    return output
 
-#def nextGeneration(board):
+
+def getNextGeneration(board):
+    liveTable = onOffTable(board)
+    printBoard(liveTable)
+    print("\n")
+    output = []
+    for i in range(len(board[0])):
+        temp = []
+        for j in range(len(board)):
+            if(liveTable[i][j] >= 2 and board[i][j] == 1):
+                temp.append(1)
+            elif(liveTable[i][j] >= 3):
+                temp.append(1)
+            else:
+                temp.append(0)
+        output.append(temp)
+    return output
 
 
 
@@ -71,6 +97,8 @@ def main():
     print("Generation 0")
     printBoard(board)
     addToFile("./outLife.txt", board, 0)
+    next = getNextGeneration(board)
+    printBoard(next)
     '''
     for gen in range(generations):
         print("Generation " + (gen + 1))

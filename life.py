@@ -1,7 +1,3 @@
-export DISPLAY=:0.0
-
-import Tkinter as tk
-
 
 def readInput(path):
     output = []
@@ -101,11 +97,6 @@ def getNextGeneration(board):
 
 #Driver
 def main():
-    #GUI
-    root = tk.Tk()
-    root.mainloop()
-
-
     board, generations = readInput("./inLife.txt")
     generations = int(generations)
     print("Generations to Simulate: " + str(generations))

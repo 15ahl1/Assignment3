@@ -1,0 +1,1 @@
+inLife.txt needs to be placed in this directory for the application to start
